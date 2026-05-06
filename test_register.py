@@ -12,7 +12,7 @@ PASSWORD = "brave0404"
 
 
 # =============================
-# SETUP
+# SETUP (前提条件)
 # =============================
 def open_screen(page):
     page.goto(BASE_URL)
@@ -53,74 +53,89 @@ def select_dropdown_option(page, text):
 
 
 # =============================
-# TEST CASES
+# TEST CASES (đã thêm 前提条件)
 # =============================
 def test_TC1_title(page):
+    open_screen(page)
     expect(page.get_by_text("新規アカウント追加")).to_be_visible()
 
 
 def test_TC2_url(page):
+    open_screen(page)
     expect(page).to_have_url(re.compile("account-management"))
 
 
 def test_TC3_account_label(page):
+    open_screen(page)
     expect(get_form_label(page, "アカウント名")).to_be_visible()
 
 
 def test_TC4_account_input(page):
+    open_screen(page)
     page.locator("input[name='userName']").fill("TestUser")
     expect(page.locator("input[name='userName']")).to_have_value("TestUser")
 
 
 def test_TC5_email_label(page):
+    open_screen(page)
     expect(get_form_label(page, "メールアドレス")).to_be_visible()
 
 
 def test_TC6_email_input(page):
+    open_screen(page)
     page.locator("input[name='email']").fill("test@gmail.com")
     expect(page.locator("input[name='email']")).to_have_value("test@gmail.com")
 
 
 def test_TC7_password_label(page):
+    open_screen(page)
     expect(get_form_label(page, "パスワード")).to_be_visible()
 
 
 def test_TC8_password_placeholder(page):
+    open_screen(page)
     expect(page.locator("input[name='password']")).to_have_attribute("placeholder", "**********")
 
 
 def test_TC9_password_input(page):
+    open_screen(page)
     page.locator("input[name='password']").fill("Password123")
     expect(page.locator("input[name='password']")).to_have_value("Password123")
 
 
 def test_TC10_dropdown(page):
+    open_screen(page)
     expect(get_dropdown(page)).to_be_visible()
 
 
 def test_TC11_select_master(page):
+    open_screen(page)
     select_dropdown_option(page, "マスター管理者")
     expect(get_dropdown(page)).to_contain_text("マスター管理者")
 
 
 def test_TC12_select_tenant(page):
+    open_screen(page)
     select_dropdown_option(page, "テナント管理者")
     expect(get_dropdown(page)).to_contain_text("テナント管理者")
 
 
 def test_TC13_only_one_dropdown(page):
+    open_screen(page)
     select_dropdown_option(page, "マスター管理者")
     select_dropdown_option(page, "テナント管理者")
     expect(get_dropdown(page)).to_contain_text("テナント管理者")
 
 
 def test_TC14_permission_label(page):
+    open_screen(page)
     select_dropdown_option(page, "テナント管理者")
     expect(page.get_by_text("有")).to_be_visible()
     expect(page.get_by_text("無")).to_be_visible()
 
 
 def test_TC15_select_yes(page):
+    open_screen(page)
     select_dropdown_option(page, "テナント管理者")
     yes_radio = page.get_by_role("radio", name="有")
     yes_radio.check()
@@ -128,6 +143,7 @@ def test_TC15_select_yes(page):
 
 
 def test_TC16_select_no(page):
+    open_screen(page)
     select_dropdown_option(page, "テナント管理者")
     no_radio = page.get_by_role("radio", name="無")
     no_radio.check()
@@ -135,6 +151,7 @@ def test_TC16_select_no(page):
 
 
 def test_TC17_only_one_radio(page):
+    open_screen(page)
     select_dropdown_option(page, "テナント管理者")
 
     yes_radio = page.get_by_role("radio", name="有")
@@ -199,8 +216,6 @@ def generate_html_report(results, passed, failed):
         f.write(html)
 
     print("\nReport generated: report.html")
-
-    # auto mở
     webbrowser.open("report.html")
 
 
@@ -217,8 +232,6 @@ def run():
 
         context = browser.new_context()
         page = context.new_page()
-
-        open_screen(page)
 
         tests = [
             test_TC1_title,
@@ -273,7 +286,6 @@ def run():
 
         browser.close()
 
-        # 👉 generate HTML
         generate_html_report(results, passed, failed)
 
 
