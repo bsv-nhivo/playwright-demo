@@ -1,7 +1,0 @@
-venv/
-.vscode/
-__pycache__/
-*.pyc
-report.html
-playwright-report/
-test-results/
