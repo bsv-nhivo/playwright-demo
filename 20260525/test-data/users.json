@@ -1,0 +1,54 @@
+{
+  "validUser": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "problemUser": {
+    "username": "problem_user",
+    "password": "secret_sauce"
+  },
+  "invalidUsername": {
+    "username": "abc123",
+    "password": "secret_sauce"
+  },
+  "wrongPassword": {
+    "username": "standard_user",
+    "password": "123456"
+  },
+  "wrongUsernameAndPassword": {
+    "username": "abc123",
+    "password": "123456"
+  },
+  "LOGIN_005": {
+    "username": "standard_user"
+  },
+  "LOGIN_010": {
+    "password": "secret_sauce"
+  },
+  "LOGIN_017": {
+    "password": "secret_sauce"
+  },
+  "LOGIN_018": {
+    "username": "standard_user"
+  },
+  "LOGIN_021": {
+    "username": "standard_user",
+    "password": "secret_sauce"
+  },
+  "LOGIN_022": {
+    "username": "problem_user",
+    "password": "secret_sauce"
+  },
+  "LOGIN_023": {
+    "username": "abc123",
+    "password": "secret_sauce"
+  },
+  "LOGIN_024": {
+    "username": "standard_user",
+    "password": "123456"
+  },
+  "LOGIN_025": {
+    "username": "abc123",
+    "password": "123456"
+  }
+}
