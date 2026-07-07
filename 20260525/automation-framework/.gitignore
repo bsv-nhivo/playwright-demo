@@ -1,8 +1,22 @@
+# Python
+__pycache__/
+*.py[cod]
 
-# Playwright
-node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/
-/playwright/.auth/
+# Virtual Environment
+.venv/
+venv/
+
+# Pytest
+.pytest_cache/
+
+# Test Reports
+reports/
+test-results/
+playwright-report/
+allure-results/
+
+# Environment
+.env
+
+# macOS
+.DS_Store
