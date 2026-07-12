@@ -1,447 +1,189 @@
-# SauceDemo Automation Framework
+# Automation Framework
 
-Automation testing framework for **SauceDemo** developed using **Playwright** and **TypeScript**.
-
-This project applies the **Page Object Model (POM)** design pattern, separates test data from test scripts, supports multi-browser execution, and generates Playwright HTML reports.
+## Thông tin
+- **Framework:** Playwright + Python + Pytest
+- **Design Pattern:** Page Object Model (POM)
+- **Target Website:** https://www.saucedemo.com/
 
 ---
-# 1. Project Overview
 
-This project was developed as part of an Automation Testing training assignment.
+# Cấu trúc Framework
 
-The objective of this project is to automate the complete purchasing workflow on the SauceDemo website while applying automation testing best practices.
-
-The framework was designed with the following goals:
-
-- Apply Page Object Model (POM)
-- Separate test data from test scripts
-- Support JSON and CSV test data
-- Execute tests on multiple browsers
-- Generate HTML reports
-- Keep test cases independent
-- Improve maintainability and readability
-
-### Application Under Test
-
-Website:
-
-> https://www.saucedemo.com/
-
-Language:
-
-> TypeScript
-
-Automation Framework:
-
-> Playwright
-
-Design Pattern:
-
-> Page Object Model (POM)
----
-
-# 2. Technology Stack
-
-| Category | Technology |
-|-----------|------------|
-| Programming Language | TypeScript |
-| Automation Framework | Playwright |
-| Runtime | Node.js |
-| Package Manager | npm |
-| Design Pattern | Page Object Model (POM) |
-| Test Data | JSON / CSV |
-| Reporting | Playwright HTML Report |
-| Browsers | Chromium / Firefox / WebKit |
-| IDE | Visual Studio Code |
-| Version Control | Git |
----
-
-# 3. Framework Architecture
-
-The framework follows the **Page Object Model (POM)** architecture.
-                Tests
-                  │
-                  ▼
-             Test Fixture
-                  │
-                  ▼
-             Page Objects
-                  │
-                  ▼
-            Playwright API
-                  │
-                  ▼
-              SauceDemo
-
-Workflow:
-
-1. Test cases are executed.
-2. Fixtures initialize all required Page Objects.
-3. Tests call reusable methods from Page Objects.
-4. Page Objects interact with SauceDemo.
-5. Playwright performs browser actions.
-6. Test results are generated.
----
-
-# 4. Project Structure
-
-```text
+```
 automation-framework/
 │
-├── fixtures/
-│   └── testFixture.ts          # Initialize shared Page Objects
-│
 ├── pages/
-│   ├── LoginPage.ts
-│   ├── ProductPage.ts
-│   ├── ProductDetailPage.ts
-│   ├── CartPage.ts
-│   ├── CheckoutStepOnePage.ts
-│   ├── CheckoutStepTwoPage.ts
-│   └── CheckoutCompletePage.ts
+│   ├── login_page.py
+│   ├── product_page.py
+│   └── cart_page.py
+│
+├── tests/
+│   ├── test_login.py
+│   ├── test_product.py
+│   └── test_cart.py
 │
 ├── test-data/
 │   ├── users.json
 │   ├── users.csv
 │   └── products.json
 │
-├── tests/
-│   ├── login/
-│   ├── product/
-│   ├── item-details/
-│   ├── cart/
-│   ├── checkout-step-one/
-│   ├── checkout-step-two/
-│   └── checkout-complete/
-│
 ├── utils/
-│   ├── jsonReader.ts
-│   └── csvReader.ts
+│   ├── json_reader.py
+│   └── csv_reader.py
 │
-├── playwright.config.ts
-├── package.json
-├── tsconfig.json
-└── README.md
-```
----
-
-# 5. Framework Design
-
-The framework follows the **Page Object Model (POM)** design pattern.
-
-Each screen in SauceDemo is implemented as a separate Page Object class.
-
-## Page Objects
-
-| Page | Responsibility |
-|------|----------------|
-| LoginPage | Login screen actions and validations |
-| ProductPage | Inventory page actions |
-| ProductDetailPage | Product Detail page |
-| CartPage | Shopping Cart page |
-| CheckoutStepOnePage | Customer Information page |
-| CheckoutStepTwoPage | Checkout Overview page |
-| CheckoutCompletePage | Order Completion page |
-
-Each Page Object contains:
-
-- UI Locators
-- User Actions
-- Verification Methods
-
-Test cases never interact with locators directly.
----
-
-# 6. Test Data Management
-
-The framework separates test data from test scripts.
-
-Current supported formats:
-
-- JSON
-- CSV
-
-Folder:
-
-```text
-test-data/
-
-users.json
-
-users.csv
-
-products.json
+├── conftest.py
+├── pytest.ini
+├── requirements.txt
+├── README.md
+└── .gitignore
 ```
 
-Example
+---
+
+# Cách chạy Test
+
+## 1. Cài đặt dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+## 2. Cài đặt browser của Playwright
+
+```bash
+playwright install
+```
+
+## 3. Chạy toàn bộ test
+
+```bash
+pytest
+```
+
+## 4. Chạy một file test
+
+Ví dụ:
+
+```bash
+pytest tests/test_login.py
+```
+
+## 5. Chạy theo browser
+
+Framework hỗ trợ chạy trên:
+
+- Chromium
+- Firefox
+- WebKit
+
+Browser được cấu hình trong `conftest.py` bằng cơ chế Parameterization của Pytest.
+
+---
+
+# Cách thêm Test Data
+
+Framework hỗ trợ đọc dữ liệu từ JSON và CSV.
+
+## User
+
+Thêm user mới vào:
+
+```
+test-data/users.json
+```
+
+Ví dụ:
 
 ```json
 {
-  "validUser": {
+  "valid_user": {
     "username": "standard_user",
     "password": "secret_sauce"
   }
 }
 ```
 
-Benefits
+## Product
 
-- Easy maintenance
-- Reusable test data
-- Cleaner test scripts
-- Support multiple datasets
+Thêm sản phẩm vào:
+
+```
+test-data/products.json
+```
+
+Ví dụ:
+
+```json
+{
+  "backpack": {
+    "name": "Sauce Labs Backpack"
+  }
+}
+```
+
+Trong testcase chỉ cần gọi:
+
+```python
+users["valid_user"]
+products["backpack"]
+```
+
+không cần hard-code dữ liệu trong test script.
+
 ---
 
-# 7. Playwright Configuration
+# Áp dụng Page Object Model (POM)
 
-The Playwright configuration is defined in **playwright.config.ts**.
+Framework được xây dựng theo mô hình **Page Object Model (POM)** nhằm tăng khả năng bảo trì và tái sử dụng code.
 
-Current configuration includes:
+Nguyên tắc áp dụng:
 
-- Base URL
-- Timeout
-- Parallel execution
-- Multi-browser execution
-- HTML Report
-- Screenshot on failure
-- Trace on failure
-- Headless execution
+- **pages/** chứa toàn bộ Locator và các thao tác trên từng màn hình.
+- **tests/** chỉ chứa logic kiểm thử, không khai báo locator.
+- Dữ liệu kiểm thử được tách riêng trong **test-data/**.
+- Các hàm đọc dữ liệu được quản lý trong **utils/**.
+- **conftest.py** quản lý Fixture, Browser và khởi tạo Page Object.
 
-Supported browsers
+Ví dụ:
 
-- Chromium
-- Firefox
-- WebKit
+```
+tests/test_login.py
+        │
+        ▼
+pages/login_page.py
+        │
+        ▼
+Playwright API
+```
+
+Việc tách riêng Page Object giúp:
+
+- Giảm trùng lặp code.
+- Dễ bảo trì khi UI thay đổi.
+- Test script ngắn gọn, dễ đọc.
+- Tăng khả năng tái sử dụng cho nhiều testcase.
+
 ---
 
-# 8. Test Coverage
-
-| Module | Number of Test Cases |
-|----------|--------------------:|
-| Login | 29 |
-| All Item | 45 |
-| Item Details | 33 |
-| Cart | 54 |
-| Checkout Step One | 38 |
-| Checkout Step Two | 48 |
-| Checkout Complete | 25 |
-| **Total** | **272** |
-
-Modules covered:
-
-- Login
-- Product Inventory
-- Product Detail
-- Shopping Cart
-- Checkout Step One
-- Checkout Step Two
-- Checkout Complete
----
-
-# 9. Installation
-
-## Prerequisites
-
-Before running the project, make sure the following software is installed:
-
-- Node.js (v22 or later recommended)
-- npm
-- Git
-- Visual Studio Code (recommended)
-
-## Clone the project
-
-```bash
-git clone <repository-url>
-cd automation-framework
-```
-
-## Install dependencies
-
-```bash
-npm install
-```
-
-## Install Playwright browsers
-
-```bash
-npx playwright install
-```
-
-## Verify installation
-
-```bash
-npx playwright --version
-```
----
-
-# 10. Running Tests
-
-## Run all tests
-
-```bash
-npx playwright test
-```
-
-## Run a specific module
+# Danh sách Test Case
 
 ### Login
 
-```bash
-npx playwright test tests/login/login.spec.ts
-```
+- Login thành công
+- Login sai Password
+- Login sai Username
+- Login để trống Username
 
 ### Product
 
-```bash
-npx playwright test tests/product/product.spec.ts
-```
-
-### Item Details
-
-```bash
-npx playwright test tests/item-details/item-details.spec.ts
-```
+- Hiển thị danh sách sản phẩm
+- Xem chi tiết sản phẩm
 
 ### Cart
 
-```bash
-npx playwright test tests/cart/cart.spec.ts
-```
+- Thêm sản phẩm vào Cart
+- Xóa sản phẩm khỏi Cart
 
-### Checkout Step One
+Tổng cộng: **8 Test Cases**
 
-```bash
-npx playwright test tests/checkout-step-one/checkout-step-one.spec.ts
-```
-
-### Checkout Step Two
-
-```bash
-npx playwright test tests/checkout-step-two/checkout-step-two.spec.ts
-```
-
-### Checkout Complete
-
-```bash
-npx playwright test tests/checkout-complete/checkout-complete.spec.ts
-```
-
-## Run tests on a specific browser
-
-### Chromium
-
-```bash
-npx playwright test --project=Chromium
-```
-
-### Firefox
-
-```bash
-npx playwright test --project=Firefox
-```
-
-### WebKit
-
-```bash
-npx playwright test --project=WebKit
-```
-
-## Type Checking
-
-```bash
-npx tsc --noEmit
-```
----
-
-# 11. HTML Report
-
-After running the test suite, Playwright automatically generates an HTML report.
-
-To open the report:
-
-```bash
-npx playwright show-report
-```
-
-The report includes:
-
-- Test execution summary
-- Passed / Failed test cases
-- Screenshots (on failure)
-- Trace files (on failure)
-- Execution time
-- Browser information
----
-
-# 12. Best Practices
-
-The framework follows several automation testing best practices.
-
-### Page Object Model
-
-- One Page Object per screen
-- Reusable methods
-- Centralized locators
-
-### Test Data Separation
-
-- JSON
-- CSV
-
-### Independent Test Cases
-
-Each test case prepares its own data.
-
-No dependency exists between test cases.
-
-### Smart Wait
-
-The framework avoids using:
-
-```ts
-waitForTimeout()
-```
-
-Instead, it uses Playwright's built-in waiting mechanism:
-
-```ts
-await expect(locator).toBeVisible();
-
-await page.waitForURL();
-```
-
-### Multi-browser Execution
-
-The framework supports:
-
-- Chromium
-- Firefox
-- WebKit
-
-### Maintainability
-
-- Clear folder structure
-- Reusable Page Objects
-- Shared Fixtures
-- Centralized configuration
----
-
-# 13. Troubleshooting
-
-| Problem | Solution |
-|----------|----------|
-| Node version issue | Use `nvm use 22` |
-| Playwright browser missing | Run `npx playwright install` |
-| TypeScript errors | Run `npx tsc --noEmit` |
-| Report not generated | Execute `npx playwright show-report` after running tests |
-| Browser does not launch | Check Playwright installation |
-| Tests not found | Verify file path and naming convention |
-| Module import errors | Run commands from the project root directory |
----
-
-# 14. Project Information
-
-- Framework: Playwright
-- Language: TypeScript
-- Design Pattern: Page Object Model (POM)
+Framework được cấu hình chạy tự động trên **Chromium, Firefox và WebKit** bằng Pytest Parameterization.
